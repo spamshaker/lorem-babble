@@ -7,6 +7,24 @@
   "references": [
     {
       "path": "../auth"
+    },
+    {
+      "path": "../errors"
+    },
+    {
+      "path": "../post"
+    },
+    {
+      "path": "../posts"
+    },
+    {
+      "path": "../search"
+    },
+    {
+      "path": "../services"
+    },
+    {
+      "path": "../utils"
     }
   ],
   "include": [

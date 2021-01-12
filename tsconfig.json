@@ -18,5 +18,8 @@
         "packages/*"
       ]
     }
-  }
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }

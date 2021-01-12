@@ -29,5 +29,8 @@
   },
   "bugs": {
     "url": "https://github.com/spamshaker/lorem-babble/issues"
+  },
+  "dependencies": {
+    "@lorem-babble/services": "1.0.0"
   }
 }
