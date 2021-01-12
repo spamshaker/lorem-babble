@@ -1,0 +1,31 @@
+{
+  "name": "@lorem-babble/posts",
+  "version": "1.0.0",
+  "description": "Now I’m the model of a modern major general / The venerated Virginian veteran whose men are all / Lining up, to put me up on a pedestal / Writin’ letters to relatives / Embellishin’ my elegance and eloquence / But the elephant is in the room / The truth is in ya face when ya hear the British cannons go / BOOM",
+  "keywords": [],
+  "author": "Michał Grzegorzewski <github@ria-develop.pl>",
+  "homepage": "https://github.com/spamshaker/lorem-babble/tree/master/packages/posts#readme",
+  "license": "ISC",
+  "main": "lib/posts.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spamshaker/lorem-babble.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "prepublishOnly": "tsc -b ."
+  },
+  "bugs": {
+    "url": "https://github.com/spamshaker/lorem-babble/issues"
+  }
+}

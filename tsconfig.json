@@ -5,6 +5,18 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "Node",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "packages/*": [
+        "packages/*"
+      ]
+    }
   }
 }
