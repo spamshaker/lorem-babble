@@ -1,40 +1,32 @@
-import {IUserDTO, IAuthService} from '@lorem-babble/services';
-
-export interface IUser {
-  username?: string;
-  firstName?: string;
-  lastName?: string;
-  id?: string;
-}
+import {ISessionUser, IAuthService} from '@lorem-babble/services';
 
 export interface IAuthDAO {
   login: (authUsername: string, authPassword: string) => Promise<void>;
   logout: () => Promise<void>;
-  getCurrentUser: () => Promise<IUser>;
+  getCurrentUser: () => Promise<ISessionUser>;
 }
 
 export interface IAuthModel {
-  currentUser?: IUserDTO;
+  currentUser?: ISessionUser;
   authUsername?: string;
   authPassword?: string;
   isAuthenticated?: boolean;
 }
 
-export const createAuthDAO = (service: IAuthService): IAuthDAO => {
+export const createAuthDAO = (service: IAuthService): IAuthDAO | never => {
   const model: IAuthModel = {};
   const login = async (authUsername: string, authPassword: string): Promise<void> => {
-    if (!(authUsername === model.authUsername && authPassword === model.authPassword && model.isAuthenticated)) {
-      const {doAuth, getUser} = service;
-      model.authUsername = authUsername;
-      model.authPassword = authPassword;
+    const {doAuth, getUser} = service;
+    model.authUsername = authUsername;
+    model.authPassword = authPassword;
+    model.isAuthenticated = false;
 
-      await doAuth(authUsername, authPassword);
-      model.currentUser = await getUser();
-      model.isAuthenticated = true;
-    }
+    await doAuth(authUsername, authPassword);
+    model.currentUser = await getUser();
+    model.isAuthenticated = true;
   };
 
-  const toUser = (): IUser => {
+  const toUser = (): ISessionUser => {
     const {currentUser} = model;
     if (!currentUser) {
       return {};
@@ -54,11 +46,11 @@ export const createAuthDAO = (service: IAuthService): IAuthDAO => {
     window.location.href = '/login';
   };
 
-  const getCurrentUser = async (): Promise<IUser> => {
+  const getCurrentUser = async (): Promise<ISessionUser> => {
     const {isAuthenticated, currentUser = {id: '', exp: NaN}} = model;
     if (isAuthenticated) {
       const currentTime = Date.now() / 1000;
-      if (isNaN(currentUser.exp) || currentUser.exp < currentTime) {
+      if (!currentUser.exp || currentUser.exp < currentTime) {
         await logout();
       }
     }
