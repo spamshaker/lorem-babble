@@ -1,7 +1,5 @@
 import {ISessionUser, IUserService} from './services';
-
-export const AUTH_ERROR = 'User doesnt exists or wrong password';
-export const AUTH_SESSION_ERROR = 'User is not logged in';
+import {AUTH_ERROR, AUTH_SESSION_ERROR} from '@lorem-babble/errors';
 
 export interface IAuthService {
   doAuth: (authUsername: string, authPassword: string) => Promise<void>;
@@ -26,7 +24,7 @@ export const newAuthService = (userService: IUserService, sessionUser?: ISession
     },
     doLogout(): Promise<void> {
       currentUser = undefined;
-      return Promise.resolve();
+      return Promise.resolve(undefined);
     },
     getUser(): Promise<ISessionUser> {
       return new Promise((resolve, reject) => {

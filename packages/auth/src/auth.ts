@@ -1,66 +1,38 @@
-import {ISessionUser, IAuthService} from '@lorem-babble/services';
-
+import {IAuthService, ISessionUser, IUser, newAuthService, newLocalUserService} from '@lorem-babble/services';
 export interface IAuthDAO {
   login: (authUsername: string, authPassword: string) => Promise<void>;
   logout: () => Promise<void>;
-  getCurrentUser: () => Promise<ISessionUser>;
+  getCurrentUser: () => ISessionUser | undefined;
 }
 
 export interface IAuthModel {
   currentUser?: ISessionUser;
   authUsername?: string;
   authPassword?: string;
-  isAuthenticated?: boolean;
 }
 
-export const createAuthDAO = (service: IAuthService): IAuthDAO | never => {
+export const newAuthDAO = (service: IAuthService): IAuthDAO | never => {
   const model: IAuthModel = {};
   const login = async (authUsername: string, authPassword: string): Promise<void> => {
     const {doAuth, getUser} = service;
     model.authUsername = authUsername;
     model.authPassword = authPassword;
-    model.isAuthenticated = false;
+    model.currentUser = undefined;
 
     await doAuth(authUsername, authPassword);
-    model.currentUser = await getUser();
-    model.isAuthenticated = true;
-  };
-
-  const toUser = (): ISessionUser => {
-    const {currentUser} = model;
-    if (!currentUser) {
-      return {};
-    }
-    const {firstName, id, lastName, username} = currentUser;
-    return {
-      firstName,
-      id,
-      lastName,
-      username
-    };
+    const {username, firstName, lastName, exp, id} = await getUser();
+    model.currentUser = {username, firstName, lastName, exp, id};
   };
 
   const logout = async () => {
     await service.doLogout();
-    model.isAuthenticated = false;
+    model.currentUser = undefined;
     window.location.href = '/login';
   };
 
-  const getCurrentUser = async (): Promise<ISessionUser> => {
-    const {isAuthenticated, currentUser = {id: '', exp: NaN}} = model;
-    if (isAuthenticated) {
-      const currentTime = Date.now() / 1000;
-      if (!currentUser.exp || currentUser.exp < currentTime) {
-        await logout();
-      }
-    }
-    return new Promise((resolve, reject) => {
-      if (currentUser) {
-        resolve(toUser());
-      } else {
-        reject();
-      }
-    });
+  const getCurrentUser = (): ISessionUser | undefined => {
+    const {currentUser} = model;
+    return currentUser && {...currentUser};
   };
   return {
     login,
@@ -69,4 +41,4 @@ export const createAuthDAO = (service: IAuthService): IAuthDAO | never => {
   };
 };
 
-export default 'Auth';
+export const newLocalAuthDAO = (users: IUser[]): IAuthDAO => newAuthDAO(newAuthService(newLocalUserService(users)));

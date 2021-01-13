@@ -14,9 +14,7 @@ export interface IUserService {
   find(example: Partial<IUser>): Promise<IUser | undefined>;
 }
 
-export const newLocalUserService = (list: IUser[]): IUserService => {
-  const users: IUser[] = list;
-
+export const newLocalUserService = (users: IUser[]): IUserService => {
   return {
     find(example: Partial<IUser>): Promise<IUser | undefined> {
       const props = Object.keys(example);

@@ -1,12 +1,6 @@
-import {
-  AUTH_ERROR,
-  AUTH_SESSION_ERROR,
-  IAuthService,
-  IUser,
-  newAuthService,
-  newLocalUserService
-} from '../src/services';
+import {IAuthService, IUser, newAuthService, newLocalUserService} from '../src/services';
 import {JOHN, KATE} from '../__mocks__/users';
+import {AUTH_ERROR, AUTH_SESSION_ERROR} from '@lorem-babble/errors';
 
 describe('given two users list', () => {
   let service: IAuthService;
