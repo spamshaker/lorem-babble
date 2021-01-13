@@ -1,8 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-// To improve build times for large projects enable fork-ts-checker-webpack-plugin
-// const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const {TsconfigPathsPlugin} = require('tsconfig-paths-webpack-plugin');
 
 const templateContent = `<!DOCTYPE html>
 <html lang="en">
@@ -19,7 +17,9 @@ const templateContent = `<!DOCTYPE html>
 module.exports = {
   mode: 'development',
   entry: 'packages/client/src/client.tsx',
+  devtool: 'source-map',
   output: {
+    publicPath: '/',
     path: __dirname + '/dist',
     filename: '[name].js'
   },
@@ -44,16 +44,15 @@ module.exports = {
   resolve: {
     modules: ['node_modules', path.resolve(__dirname)],
     extensions: ['.js', '.ts', '.tsx'],
-    plugins: [new TsconfigPathsPlugin({})]
+    plugins: [new TsconfigPathsPlugin({configFile: './packages/tsconfig.json', baseUrl: 'packages'})]
   },
   devServer: {
-    hot: true
+    historyApiFallback: true
   },
   plugins: [
     new HtmlWebpackPlugin({
       templateContent
     })
-    // new ForkTsCheckerWebpackPlugin()
   ],
   optimization: {
     runtimeChunk: 'single',
