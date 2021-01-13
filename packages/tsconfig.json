@@ -1,6 +1,14 @@
 {
-  "extends": "../tsconfig",
+  "extends": "../tsconfig.json",
   "files": [],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "*"
+      ]
+    },
+  },
   "references": [
     {
       "path": "auth"
