@@ -1,7 +1,8 @@
-import {IUser, IUserService, newLocalUserService} from '../src/UserService';
+import {IUser, newLocalUserDAO} from '../src/UserService';
 import {JOHN, KATE} from '../__mocks__/users';
+import {IUserService, newLocalUserService} from '../lib/UserService';
 
-describe('LocalUserService test suite', () => {
+describe('newLocalUserService test suite', () => {
   describe('given two users list', () => {
     let users: IUser[];
     let service: IUserService;
@@ -11,25 +12,27 @@ describe('LocalUserService test suite', () => {
       john = JOHN;
       kate = KATE;
       users = [john, kate];
-      service = newLocalUserService(users);
+      service = newLocalUserService(newLocalUserDAO(users));
     });
 
     it('should find John by username = john.doe@example.com', async () => {
-      const found = await service.find({username: john.username, password: john.password});
+      const found = await service.findByNameAndPassword(john.username, john.password);
       expect(found).not.toBeNull();
       expect(found).not.toBeUndefined();
-      expect(found).toEqual(john);
+      const {password, ...johnDetails} = john;
+      expect(found).toEqual(johnDetails);
     });
 
     it('should find Kate by username = kate.smith@example.com', async () => {
-      const found = await service.find({username: kate.username, password: kate.password});
+      const found = await service.findByNameAndPassword(kate.username, kate.password);
       expect(found).not.toBeNull();
       expect(found).not.toBeUndefined();
-      expect(found).toEqual(kate);
+      const {password, ...kateDetails} = kate;
+      expect(found).toEqual(kateDetails);
     });
 
     it('should not find George by username = george.brown@example.com', async () => {
-      const found = await service.find({username: 'george.brown@example.com', password: 'secret'});
+      const found = await service.findByNameAndPassword('george.brown@example.com', 'secret');
       expect(found).toBeUndefined();
     });
   });

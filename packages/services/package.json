@@ -28,5 +28,10 @@
   },
   "bugs": {
     "url": "https://github.com/spamshaker/lorem-babble/issues"
+  },
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router": "^5.2.0"
   }
 }

@@ -1,6 +1,7 @@
-import {IAuthService, IUser, newAuthService, newLocalUserService} from '../src/services';
+import {IAuthService, IUser, newAuthService, newLocalUserDAO} from '../src/services';
 import {JOHN, KATE} from '../__mocks__/users';
 import {AUTH_ERROR, AUTH_SESSION_ERROR} from '@lorem-babble/errors';
+import {newLocalUserService} from '../lib/UserService';
 
 describe('given two users list', () => {
   let service: IAuthService;
@@ -9,7 +10,7 @@ describe('given two users list', () => {
   beforeEach(() => {
     john = JOHN;
     kate = KATE;
-    service = newAuthService(newLocalUserService([john, kate]));
+    service = newAuthService(newLocalUserService(newLocalUserDAO([john, kate])));
   });
 
   it('should authorize john.doe@example.com', async () => {
@@ -31,12 +32,12 @@ describe('given two users list', () => {
   });
 
   it('should reject request user data while user not logged in', async () => {
-    return expect(service.getUser()).rejects.toEqual(new Error(AUTH_SESSION_ERROR));
+    return expect(service.getUser()).toBeUndefined();
   });
 
   it('should reject request user data while user not logged in', async () => {
-    service = newAuthService(newLocalUserService([john, kate]), john);
+    service = newAuthService(newLocalUserService(newLocalUserDAO([john, kate])), john);
     await service.doLogout();
-    return expect(service.getUser()).rejects.toEqual(new Error(AUTH_SESSION_ERROR));
+    return expect(service.getUser()).toBeUndefined();
   });
 });

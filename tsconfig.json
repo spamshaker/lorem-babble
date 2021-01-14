@@ -11,7 +11,12 @@
     "declarationMap": true,
     "sourceMap": true,
     "composite": true,
-    "jsx": "react"
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "skipDefaultLibCheck": true,
+    "allowJs": true
   },
   "exclude": [
     "node_modules"

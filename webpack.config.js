@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const {TsconfigPathsPlugin} = require('tsconfig-paths-webpack-plugin');
 
 const templateContent = `<!DOCTYPE html>
@@ -38,6 +39,10 @@ module.exports = {
             projectReferences: true
           }
         }
+      },
+      {
+        test: /\.(sa|sc|c)ss$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader']
       }
     ]
   },
@@ -50,6 +55,9 @@ module.exports = {
     historyApiFallback: true
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].css'
+    }),
     new HtmlWebpackPlugin({
       templateContent
     })

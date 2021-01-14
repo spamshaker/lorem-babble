@@ -6,24 +6,27 @@ type PostViewParams = {
   id: string;
 };
 
-const PostView = (): JSX.Element => {
+const PostDetails = (): JSX.Element => {
   const {id} = useParams<PostViewParams>();
   const [data, setData] = useState<IPost>({});
 
   useEffect(() => {
     (async () => {
-      const response = await (await fetch('https:///jsonplaceholder.typicode.com/posts/1')).json();
+      const response = await (await fetch(`https:///jsonplaceholder.typicode.com/posts/${id}`)).json();
+      console.log(response);
       setData(response);
     })();
   }, [id]);
   const {title, body} = data;
   return (
-    <div>
-      <h1>
-        Post {id} {title}
-      </h1>
-      <div>{body}</div>
+    <div className="container">
+      <div>
+        <h2>
+          {id} {title}
+        </h2>
+        <p>{body}</p>
+      </div>
     </div>
   );
 };
-export default PostView;
+export default PostDetails;

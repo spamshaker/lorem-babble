@@ -1,39 +1,37 @@
-import {ISessionUser, IUserService} from './services';
-import {AUTH_ERROR, AUTH_SESSION_ERROR} from '@lorem-babble/errors';
+import {AUTH_ERROR} from '@lorem-babble/errors';
+import {ISessionUser, IUserService} from './UserService';
+
+export interface IAuthModel {
+  currentUser?: ISessionUser;
+}
 
 export interface IAuthService {
   doAuth: (authUsername: string, authPassword: string) => Promise<void>;
-  getUser: () => Promise<ISessionUser>;
+  getUser: () => ISessionUser | undefined;
   doLogout: () => Promise<void>;
 }
 
-export const newAuthService = (userService: IUserService, sessionUser?: ISessionUser): IAuthService => {
-  let currentUser = sessionUser;
+export const newAuthService = (userService: IUserService, currentUser?: ISessionUser): IAuthService => {
+  const model: IAuthModel = {currentUser};
   return {
     async doAuth(authUsername: string, authPassword: string): Promise<void> {
-      const user = await userService.find({username: authUsername, password: authPassword});
-      const {password, ...userDetails} = user || {};
+      const user = await userService.findByNameAndPassword(authUsername, authPassword);
       return new Promise((resolve, reject) => {
         if (user) {
-          currentUser = {...userDetails};
+          model.currentUser = user;
           resolve();
         } else {
+          model.currentUser = undefined;
           reject(new Error(AUTH_ERROR));
         }
       });
     },
     doLogout(): Promise<void> {
-      currentUser = undefined;
+      model.currentUser = undefined;
       return Promise.resolve(undefined);
     },
-    getUser(): Promise<ISessionUser> {
-      return new Promise((resolve, reject) => {
-        if (currentUser) {
-          resolve(currentUser);
-        } else {
-          reject(new Error(AUTH_SESSION_ERROR));
-        }
-      });
+    getUser(): ISessionUser | undefined {
+      return model.currentUser;
     }
   };
 };
