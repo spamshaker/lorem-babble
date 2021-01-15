@@ -56,13 +56,14 @@ export const Login = (): JSX.Element => {
             id="password"
             pattern="^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])([a-zA-Z0-9]+)$"
             minLength={8}
+            aria-valuemin={8}
             required={true}
           />
         </label>
 
         {state.errorMessage && <span className="form-error">{state.errorMessage}</span>}
 
-        <button>Login</button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );

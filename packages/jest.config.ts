@@ -8,7 +8,7 @@ export default {
       tsconfig: 'tsconfig.jest.json'
     }
   },
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom',
   /*  coverageThreshold: {
     global: {
       branches: 90,
