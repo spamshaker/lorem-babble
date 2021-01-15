@@ -1,6 +1,6 @@
 import {IAuthService, IUser, newAuthService, newLocalUserDAO} from '../src/services';
 import {JOHN, KATE} from '../__mocks__/users';
-import {AUTH_ERROR, AUTH_SESSION_ERROR} from '@lorem-babble/errors';
+import {AUTH_ERROR} from '@lorem-babble/errors';
 import {newLocalUserService} from '../lib/UserService';
 
 describe('given two users list', () => {
