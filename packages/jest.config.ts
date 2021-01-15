@@ -3,6 +3,7 @@ export default {
   coverageProvider: 'v8',
   preset: 'ts-jest',
   roots: ['<rootDir>/src', '<rootDir>/__tests__'],
+  testMatch: ['**/__tests__/**/*.+(ts|tsx|js)', '**/?(*.)+(spec|test).+(ts|tsx|js)'],
   globals: {
     'ts-jest': {
       tsconfig: 'tsconfig.jest.json'
@@ -17,5 +18,5 @@ export default {
       statements: 90
     }
   },*/
-  collectCoverageFrom: ['src/*.{js,jsx,ts,tsx}', '!**/node_modules/**']
+  collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}', '!**/node_modules/**']
 };
